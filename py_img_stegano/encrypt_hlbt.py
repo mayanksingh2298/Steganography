@@ -7,13 +7,15 @@ class Encryptor(EasyFrame):
 	def __init__(self):
 		EasyFrame.__init__(self,title='Encryptor',width = 600,height=300,resizable=False)
 		self.addLabel(text = "Welcome to the Encryptor", row = 0, column = 0, columnspan = 2)
-		self.addLabel(text="Enter the message : ", row=1, column=0)
+		self.addLabel(text = "Enter the message : ", row=1, column=0)
 		self.message=self.addTextArea('',row=1,column=1,height=2, width=20,wrap='word')
-		self.addLabel(text="Select the Image : ", row=2, column=0)
-		self.filename=self.addLabel(text="", row=2, column=1)
-		self.browse=self.addButton(text="Browse",row=3, column=1,command=self.Browse)
-		self.encrypt=self.addButton(text='Encrypt',row=4,column=0,state='disabled',command=self.Encrypt)
-		self.hint=self.addLabel(text="Awaiting input.......", row=4,column=1)
+                self.addLabel(text="Enter the Password : ", row=2, column=0)
+		self.Password=self.addTextField('',row=2,column=0, width=20)
+		self.addLabel(text="Select the Image : ", row=3, column=0)
+		self.filename=self.addLabel(text="", row=3, column=1)
+		self.browse=self.addButton(text="Browse",row=4, column=1,command=self.Browse)
+		self.encrypt=self.addButton(text='Encrypt',row=5,column=0,state='disabled',command=self.Encrypt)
+		self.hint=self.addLabel(text="Awaiting input.......", row=5,column=1)
 
 	def Browse(self):
 		filetypes = [("Image files", "*.png")]
@@ -27,20 +29,26 @@ class Encryptor(EasyFrame):
 		#write the code for image processing
 		self.hint['text']='Image file generated'
 		
-
 		image_path=self.filename['text']
 		message=self.message.getText()
+		password = self.Password.getText()
 ###############################################################
+	
 		""" assume that image size is sufficient"""
 		im=Image.open(image_path)
 
 		pix=im.load()
 		width,height=im.size
-		x=0
-		y=0
-		ct=0
-		
+		key = 0		
+		for i in range(len(password)):
+			ch=password[i]
+			asc=ord(ch)
+			key += key + asc*(pow(33,i))
+			key = key%(width * height)
+		key = key%(width*height)		
+		ct=key
 		n=2**min(int(log(width,2)),int(log(height,2)))
+
 		def traverse2(ct):
 			return dtoxy(n,ct)
 		
@@ -74,7 +82,7 @@ class Encryptor(EasyFrame):
 				y=0
 				x+=1
 			return x,y
-			
+		x,y = dtoxy(n,key)
 		for index in range(len(message)):
 			ch=message[index]
 			asc=ord(ch)
@@ -108,7 +116,7 @@ class Encryptor(EasyFrame):
 							pix[x,y]=tuple(pixel)
 					t+=1
 					#x,y=traverse(x,y)
-					x,y = traverse2(9*index+3*i+j+1)
+					x,y = traverse2(9*index+3*i+j+1 + key)
 		s=basename(image_path)
 		im.save('en'+s)
 ###############################################################
