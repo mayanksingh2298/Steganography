@@ -8,4 +8,5 @@ This README would normally document whatever steps are necessary to get your app
 
 ### How do I get set up? ###
 * Download or clone the repo
-* Run erncryptor.exe
+* Open py_img_stegano folder, open dist, and run the files.
+* Note that currently executable files support ubuntu
