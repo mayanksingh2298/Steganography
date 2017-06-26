@@ -8,5 +8,4 @@ This README would normally document whatever steps are necessary to get your app
 
 ### How do I get set up? ###
 * Download or clone the repo
-* Open py_img_stegano folder, open dist, and run the files.
-* Note that currently executable files support ubuntu
+* You'll see the folders for exe files
