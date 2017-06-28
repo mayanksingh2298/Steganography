@@ -7,5 +7,6 @@ This README would normally document whatever steps are necessary to get your app
 * Encrypting text inside images and audio such that the data can be secured from reach of non-Authentic persons.
 
 ### How do I get set up? ###
-* Download or clone the repo
-* You'll see the folders for exe files
+* You'll find exe files in the executable folder, ubuntu and windows both have seperate executables
+*The source code is in the encrypt_f.py and decrypt_f.py
+*breezepythongui.py is a support file that has methods for gui development
